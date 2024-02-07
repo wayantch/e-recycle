@@ -1,57 +1,83 @@
+<?php
+session_start();
+require 'db.php';
+
+if (isset($_POST['submit'])) {
+    $username = htmlspecialchars($_POST['username']);
+    $password = htmlspecialchars($_POST['password']);
+
+    $query = mysqli_query($conn, "SELECT * FROM users WHERE username='$username'");
+    $count = mysqli_num_rows($query);
+
+    if ($count > 0) {
+        $user_data = mysqli_fetch_assoc($query);
+        $role = $user_data['role'];
+
+        if ($role == 1) {
+            $_SESSION['login'] = true;
+            $_SESSION['a_global'] = (object) $user_data;
+            $_SESSION['id'] = $user_data['username'];
+            $_SESSION['log'] = 'logged';
+            $_SESSION['role'] = 1;
+            header('Location: dasboard.php');
+            exit; // Pastikan untuk keluar setelah mengarahkan ke halaman admin
+        } else {
+            $_SESSION['login'] = true;
+            $_SESSION['a_global'] = (object) $user_data;
+            $_SESSION['id'] = $user_data['username'];
+            $_SESSION['log'] = 'logged';
+            $_SESSION['role'] = 0;
+            header('Location: index.php');
+            exit; // Pastikan untuk keluar setelah mengarahkan ke halaman user
+        }
+    } else {
+        echo '<script>alert("Username tidak ditemukan!")</script>';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - EduLearn</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="/css/login.css">
-
-    <!-- BOOTSTRAP -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Login - Recycle</title>
+    <!-- TAILWINDCSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 
     <!-- FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 
-<body>
+<body class="bg-gray-100">
 
-    <div class="container d-flex align-items-center justify-content-center vh-100">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header text-center bg-primary text-white d-flex align-items-center">
-                    <a href="index.php" class="text-white text-decoration-none ms-3"><i class="fa-solid fa-arrow-left fa-lg"></i></a>
-                    <h2 class="mb-0 mx-auto">Login</h2>
+    <div class="container flex items-center justify-center h-screen">
+        <div class="md:w-1/2 lg:w-1/3">
+            <div class="bg-white p-8 rounded-md shadow-md">
+                <div class="flex items-center">
+                    <a href="./awal.php" class="text-blue-500 text-lg"><i class="fa-solid fa-arrow-left fa-lg"></i></a>
+                    <h2 class="text-center text-2xl font-bold mx-auto">Login</h2>
                 </div>
-                <div class="card-body">
-                    <?php if (isset($error_message)) { ?>
-                        <div class="alert alert-danger"><?php echo $error_message; ?></div>
-                    <?php } ?>
-                    <form method="post">
-                        <div class="form-group">
-                            <label for="username">Username:</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password:</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary" name="login"><i class="fas fa-sign-in-alt"></i> Login</button>
-                        <hr>
-                        <div class="form-group text-left register-link">
-                            Belum punya akun? <a href="./register.php">Daftar</a>
-                        </div>
-                    </form>
-                </div>
+                <form method="post" action="" class="mt-4">
+                    <div class="mb-4">
+                        <label for="username" class="block text-sm font-medium text-gray-600">Username:</label>
+                        <input type="text" class="mt-1 p-2 w-full border rounded-md focus:outline-none focus:border-blue-500" id="username" name="username" required autocomplete="off">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="block text-sm font-medium text-gray-600">Password:</label>
+                        <input type="password" class="mt-1 p-2 w-full border rounded-md focus:outline-none focus:border-blue-500" id="password" name="password" required>
+                    </div>
+                    <button type="submit" name="submit" id="tombol" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"><i class="fas fa-sign-in-alt"></i> Login</button>
+                    <hr class="my-4">
+                    <div class="text-sm text-left register-link">
+                        Belum punya akun? <a href="./registrasi.php" class="text-blue-500 hover:underline">Daftar</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- JS -->
 
 </body>
 
