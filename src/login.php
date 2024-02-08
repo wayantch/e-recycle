@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['log'] = 'logged';
             $_SESSION['role'] = 1;
             header('Location: dasboard.php');
-            exit; // Pastikan untuk keluar setelah mengarahkan ke halaman admin
+            exit; 
         } else {
             $_SESSION['login'] = true;
             $_SESSION['a_global'] = (object) $user_data;
@@ -28,7 +28,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['log'] = 'logged';
             $_SESSION['role'] = 0;
             header('Location: index.php');
-            exit; // Pastikan untuk keluar setelah mengarahkan ke halaman user
+            exit; 
         }
     } else {
         echo '<script>alert("Username tidak ditemukan!")</script>';
@@ -76,9 +76,6 @@ if (isset($_POST['submit'])) {
             </div>
         </div>
     </div>
-
-    <!-- JS -->
-
 </body>
 
 </html>

@@ -42,6 +42,9 @@ if (!isset($_SESSION['a_global']->nama_user)) {
                     <li class="nav-item">
                         <a class="nav-link active" href="transaksi.php"><i class="fas fa-dollar-sign me-1"></i>Transaksi</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="riwayat.php"><i class="fa-solid fa-clock-rotate-left me-1"></i>Riwayat</a>
+                    </li>
                 </ul>
                 <span class="navbar-text" onclick="return confirm('Yakin ingin Logout?')">
                     <a href="logout.php"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>

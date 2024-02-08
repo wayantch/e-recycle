@@ -6,14 +6,14 @@ if (!isset($_SESSION['login'])) {
     exit;
 }
 
-if (!isset($_SESSION['a_global']->nama_user)) {
-    header('Location: login.php');
+if (!isset($_SESSION['a_global']->role) || $_SESSION['a_global']->role != 1) {
+    header('Location: index.php');
     exit;
 }
 
 require 'db.php';
 
-$query = mysqli_query($conn, "SELECT * FROM users");
+$query = mysqli_query($conn, "SELECT * FROM users WHERE role = 1");
 $user = mysqli_fetch_object($query);
 ?>
 
@@ -46,10 +46,11 @@ $user = mysqli_fetch_object($query);
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link text-white" href="dasboard.php">
+                            <a class="nav-link text-white" href="dashboard.php">
                                 <i class="fas fa-tachometer-alt mr-1"></i>Dashboard
                             </a>
                         </li>
+                        <!-- Tambahkan menu sesuai kebutuhan -->
                         <li class="nav-item">
                             <a class="nav-link text-white" href="profil.php">
                                 <i class="fas fa-user mr-1"></i>Profil
@@ -81,12 +82,12 @@ $user = mysqli_fetch_object($query);
     <main>
         <div class="container mt-4">
             <div class="bg-primary text-white p-4 mb-4 rounded">
-                <h3 class="text-2xl font-semibold">Selamat Datang, <?php echo ucwords($_SESSION['a_global']->nama_user); ?> Di e-Recycle</h3>
+                <h3 class="text-2xl font-semibold">Selamat Datang, <?php echo ucwords($user->nama_user); ?> Di e-Recycle</h3>
                 <p>Terakhir login pada <?php echo date('d F Y'); ?></p>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-4">
-                    <h3 class="text-2xl font-semibold">Welcome</h3>
+                    <h3 class="text-2xl font-semibold">Gunakan Dasboard sebaik mungkin</h3>
                     <p>
                         Selamat datang di Dashboard Admin! Di sini Anda akan menemukan segala yang Anda butuhkan untuk mengelola aplikasi kami dengan efisien dan efektif. Dari melihat ringkasan penting hingga mengelola pengguna, mengakses laporan, dan melakukan banyak lagi, semuanya tersedia dalam satu tempat yang mudah diakses. Kami telah merancang dashboard ini untuk memberikan Anda visibilitas penuh dan kendali atas aplikasi kami, sehingga Anda dapat membuat keputusan yang tepat berdasarkan informasi yang akurat. Jelajahi fitur-fitur intuitif kami dan rasakan kemudahan dalam mengelola bisnis Anda di sini di Dashboard Admin.
                     </p>

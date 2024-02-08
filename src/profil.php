@@ -101,7 +101,7 @@ if ($query) {
 
                 <div class="mb-4">
                     <label for="password" class="block text-sm font-medium text-gray-600">Password:</label>
-                    <input type="password" name="password" id="password" placeholder="Masukan Password Baru..." class="mt-1 form-control">
+                    <input type="password" name="password" id="password" placeholder="Masukan Password Baru... (Opsional)" class="mt-1 form-control">
                 </div>
 
                 <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Yakin untuk mengubah profil?')"><i class="fa-solid fa-floppy-disk mr-2"></i>Simpan</button>
@@ -121,7 +121,7 @@ if ($query) {
                 ");
                 if ($update) {
                     echo "<script>alert('Ubah data berhasil')</script>";
-                    echo "<script>window.location='profil.php'</script>";
+                    echo "<script>window.location='logout.php'</script>";
                 } else {
                     echo "Gagal " . mysqli_error($conn);
                 }

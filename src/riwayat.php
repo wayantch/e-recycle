@@ -13,16 +13,19 @@ if (!isset($_SESSION['a_global']->nama_user)) {
 
 require 'db.php';
 
-$query = mysqli_query($conn, "SELECT * FROM users");
-$user = mysqli_fetch_object($query);
+$user_name = $_SESSION['a_global']->nama_user;
+
+// Mengambil riwayat pembayaran untuk pengguna yang saat ini login
+$transaksi = mysqli_query($conn, "SELECT * FROM transaksi WHERE nama='$user_name' ORDER BY tanggal_bayar DESC");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda - e-Recycle</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>e-Recycle | Transaksi</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -58,25 +61,43 @@ $user = mysqli_fetch_object($query);
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <div class="jumbotron">
-            <h1 class="display-6">Selamat Datang, <?php echo ucfirst($_SESSION['a_global']->nama_user); ?> di e-Recycle</h1>
-            <hr class="my-4">
-            <p class="lead">Mari bersama-sama menjaga lingkungan dengan cara yang mudah dan menyenangkan.</p>
-            <hr class="my-4">
-            <p>Kunjungi platform kami untuk memulai mendaur ulang dan berkontribusi pada lingkungan.</p>
-            <a class="btn btn-primary btn-lg" href="https://id.wikipedia.org/wiki/Daur_ulang" target="_blank" role="button">Mulai Sekarang</a>
+    <!-- MAIN -->
+    <div class="container mt-4">
+        <div class="bg-primary text-white px-2 py-4 mb-4 rounded">
+            <h3 class="font-semibold">Riwayat Transaksi</h3>
         </div>
-        <hr class="my-4">
+        <div class="table-responsive">
+            <table class="table table-striped bg-white rounded-lg shadow-md">
+                <thead class="bg-primary text-white text-center">
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Tanggal Bayar</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <?php
+                    $no = 1;
+                    if (mysqli_num_rows($transaksi) > 0) {
+                        while ($row = mysqli_fetch_array($transaksi)) { ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= ucwords($row['nama']); ?></td>
+                                <td><?= $row['tanggal_bayar']; ?></td>
+                                <td><?= ucwords($row['status']); ?></td>
+                            </tr>
+                        <?php }
+                    } else { ?>
+                        <tr>
+                            <td colspan="4" class="py-2 px-4">Tidak Ada Data</td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <footer class="footer mt-auto py-3 text-white">
-        <div class="container text-center">
-            <span class="text-muted">&copy; 2024 e-Recycle. All rights reserved.</span>
-        </div>
-    </footer>
-
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- MAIN END -->
 </body>
 
 </html>

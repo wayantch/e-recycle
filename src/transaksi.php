@@ -13,10 +13,11 @@ if (!isset($_SESSION['a_global']->nama_user)) {
 
 require 'db.php';
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
     $nama = $_POST['nama'];
     $alamat = $_POST['alamat'];
-    $bukti_bayar = $_FILES['bukti']['name']; // Perubahan pada bagian ini
+    $telpon = $_POST['telpon']; // Perubahan pada bagian ini
+    $bukti_bayar = $_FILES['bukti']['name'];
 
     // Memindahkan file yang di-upload ke folder tujuan
     $target_dir = "uploads/";
@@ -24,9 +25,9 @@ if(isset($_POST['submit'])){
     move_uploaded_file($_FILES["bukti"]["tmp_name"], $target_file);
 
     // Query untuk memasukkan data ke dalam database
-    $insert = mysqli_query($conn, "INSERT INTO transaksi (nama, alamat, bukti) VALUES ('$nama', '$alamat', '$bukti_bayar')");
+    $insert = mysqli_query($conn, "INSERT INTO transaksi (nama, alamat, telp, bukti) VALUES ('$nama', '$alamat', '$telpon', '$bukti_bayar')");
 
-    if($insert){
+    if ($insert) {
         echo '<script>alert("Pembayaran Dalam Proses")</script>';
     } else {
         echo '<script>alert("Pembayaran Gagal")</script>';
@@ -64,6 +65,9 @@ if(isset($_POST['submit'])){
                     <li class="nav-item">
                         <a class="nav-link active" href="transaksi.php"><i class="fas fa-dollar-sign me-1"></i>Transaksi</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="riwayat.php"><i class="fa-solid fa-clock-rotate-left me-1"></i>Riwayat</a>
+                    </li>
                 </ul>
                 <span class="navbar-text" onclick="return confirm('Yakin ingin Logout?')">
                     <a href="logout.php"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
@@ -76,28 +80,28 @@ if(isset($_POST['submit'])){
         <h2 class="text-center mb-4">Transaksi</h2>
         <form action="" method="post" enctype="multipart/form-data"> <!-- Perubahan pada atribut form -->
             <div class="mb-3 text-center">
-                <p><strong>Note: </strong>Masukan jumlah harga sesuai dengan yang sudah tertera!</p>
+                <p><strong>Note: </strong>Masukkan jumlah harga sesuai dengan yang sudah tertera!</p>
                 <img src="./image/Qr.jpg" width="200" class="mb-2">
                 <p><strong>Rp 45.000</strong></p>
             </div>
             <hr class="my-4">
             <div class="mb-3">
                 <label for="nama" class="form-label"><strong>Nama:</strong></label>
-                <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Anda" required> 
+                <input type="text" class="form-control" id="nama" name="nama" value="<?= htmlspecialchars($_SESSION['a_global']->nama_user) ?>" required>
             </div>
             <div class="mb-3">
                 <label for="telpon" class="form-label"><strong>No HP:</strong></label>
-                <input type="number" class="form-control" id="telpon" name="telpon" placeholder="08********" required> 
+                <input type="number" class="form-control" id="telpon" name="telpon" value="" required>
             </div>
             <div class="mb-3">
                 <label for="alamat" class="form-label"><strong>Alamat:</strong></label>
-                <textarea class="form-control" name="alamat" id="alamat" rows="3" required placeholder="Perumahan Griya Hegar Asri Blok B9 No 16"></textarea>
+                <textarea class="form-control" name="alamat" id="alamat" rows="3" required></textarea>
             </div>
             <div class="mb-3">
                 <label for="file" class="form-label"><strong>Bukti Bayar:</strong></label>
-                <input type="file" class="form-control" name="bukti" id="file" required> 
+                <input type="file" class="form-control" name="bukti" id="file" required>
             </div>
-            <button type="submit" class="btn btn-primary" name="submit" onclick="return confirm ('Apakah data sudah sesuai?') ">Bayar</button> 
+            <button type="submit" class="btn btn-primary" name="submit" onclick="return confirm('Apakah data sudah sesuai?')">Bayar</button>
         </form>
         <hr class="my-4">
     </div>
