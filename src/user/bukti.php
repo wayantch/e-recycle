@@ -49,7 +49,7 @@
                                 if ($cek) {
                                     // Jika data ditemukan
                         ?>
-                                    <img src="./uploads/<?= $cek->bukti ?>" alt="Bukti Transaksi" class="bukti-img">
+                                    <img src="../uploads/<?= $cek->bukti ?>" alt="Bukti Transaksi" class="bukti-img">
                         <?php
                                 } else {
                                     // Jika data tidak ditemukan

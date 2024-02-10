@@ -12,29 +12,27 @@ if (isset($_POST['submit'])) {
     if ($count > 0) {
         $user_data = mysqli_fetch_assoc($query);
         $role = $user_data['role'];
+        $nama_user = $user_data['nama_user']; 
+
+        $_SESSION['login'] = true;
+        $_SESSION['a_global'] = (object) $user_data;
+        $_SESSION['id'] = $user_data['username'];
+        $_SESSION['nama_user'] = $nama_user;
+        $_SESSION['log'] = 'logged';
+        $_SESSION['role'] = $role;
 
         if ($role == 1) {
-            $_SESSION['login'] = true;
-            $_SESSION['a_global'] = (object) $user_data;
-            $_SESSION['id'] = $user_data['username'];
-            $_SESSION['log'] = 'logged';
-            $_SESSION['role'] = 1;
             header('Location: dasboard.php');
-            exit; 
         } else {
-            $_SESSION['login'] = true;
-            $_SESSION['a_global'] = (object) $user_data;
-            $_SESSION['id'] = $user_data['username'];
-            $_SESSION['log'] = 'logged';
-            $_SESSION['role'] = 0;
-            header('Location: index.php');
-            exit; 
+            header('Location: homepage.php');
         }
+        exit;
     } else {
         echo '<script>alert("Username tidak ditemukan!")</script>';
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,7 +53,7 @@ if (isset($_POST['submit'])) {
         <div class="md:w-1/2 lg:w-1/3">
             <div class="bg-white p-8 rounded-md shadow-md">
                 <div class="flex items-center">
-                    <a href="./awal.php" class="text-blue-500 text-lg"><i class="fa-solid fa-arrow-left fa-lg"></i></a>
+                    <a href="../index.php" class="text-blue-500 text-lg"><i class="fa-solid fa-arrow-left fa-lg"></i></a>
                     <h2 class="text-center text-2xl font-bold mx-auto">Login</h2>
                 </div>
                 <form method="post" action="" class="mt-4">
